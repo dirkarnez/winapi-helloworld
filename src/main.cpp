@@ -17,19 +17,22 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow
     wc.lpfnWndProc = WindowProc;
     wc.hInstance = hInstance;
     wc.lpszClassName = CLASS_NAME;
+    wc.hbrBackground = (HBRUSH)(COLOR_3DFACE + 1);
+    wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 
     RegisterClass(&wc);
 
     // Create the window.
 
     HWND hwnd = CreateWindowEx(
-        0,                              // Optional window styles.
+        WS_EX_TOOLWINDOW,                              // Optional window styles.
         CLASS_NAME,                     // Window class
-        L"Hello, World!",    // Window text
-        WS_OVERLAPPEDWINDOW,            // Window style
+        0, //L"Hello, World!",    // Window text
+        WS_POPUP | WS_VISIBLE | WS_SYSMENU, //WS_OVERLAPPEDWINDOW,            // Window style
 
+        9, 9, 430, 200,
         // Size and position
-        CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
+        // CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
 
         NULL,       // Parent window    
         NULL,       // Menu
@@ -72,7 +75,25 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
         EndPaint(hwnd, &ps);
     }
-    return 0;
+    case WM_MOUSEMOVE:
+    {
+        if (wParam & MK_LBUTTON)
+        {
+            DefWindowProc(hwnd, WM_SYSCOMMAND, SC_MOVE + 1, 0);
+            return 0;
+        }
+    }
+    break;
+    case WM_COMMAND:
+    {
+        switch (wParam)
+        {
+        case IDCANCEL:
+            EndDialog(hwnd, 0);
+            break;
+        }
+    }
+    break;
     }
 
     return DefWindowProc(hwnd, uMsg, wParam, lParam);
