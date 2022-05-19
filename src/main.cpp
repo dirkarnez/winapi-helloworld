@@ -1,14 +1,13 @@
 #ifndef UNICODE
 #define UNICODE
-#endif 
+#endif
 
 #include <windows.h>
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow)
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-
     // Register the window class.
     const wchar_t CLASS_NAME[] = L"Sample Window Class";
 
@@ -42,6 +41,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow
         return 0;
     }
 
+    MessageBox(NULL, TEXT("Error creating main window."), TEXT("Error"), MB_ICONERROR | MB_OK);
     ShowWindow(hwnd, nCmdShow);
 
     // Run the message loop.
